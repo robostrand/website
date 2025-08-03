@@ -1,29 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Robostrand</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Robostrand — Coming Soon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
+    :root {
+      --brand-cyan: #01ffe6;
+      --brand-blue: #005cfb;
+      --brand-dark: #10141c;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', Arial, sans-serif;
+      background: radial-gradient(ellipse at center, #202832 65%, #0b1018 100%);
       color: #fff;
+      min-height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+    }
+    .logo {
+      margin-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0);}
+      50% { transform: translateY(-10px);}
+    }
+    .logo-svg {
+      width: 100px;
+      height: 100px;
+      display: block;
+      filter: drop-shadow(0 0 18px #01ffe650);
+    }
+    .logo-text {
+      font-family: 'Orbitron', 'Roboto', Arial, sans-serif;
+      font-size: 2.05em;
+      font-weight: bold;
+      letter-spacing: 0.09em;
+      background: linear-gradient(90deg, #01ffe6 30%, #00a6fb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      margin-top: 13px;
       text-align: center;
-      padding-top: 20%;
+      text-shadow: 0 2px 18px #00a6fb33;
     }
-    h1 {
-      font-size: 3em;
-      margin-bottom: 0.5em;
+    .coming-soon {
+      font-family: 'Orbitron', Arial, sans-serif;
+      font-size: 2em;
+      letter-spacing: 0.13em;
+      color: #01ffe6;
+      text-shadow: 0 0 16px #01ffe677, 0 0 42px #00a6fb33;
+      margin-bottom: 20px;
+      margin-top: 12px;
+      font-weight: 700;
+      animation: pulse 2.2s infinite;
     }
-    p {
-      font-size: 1.2em;
+    @keyframes pulse {
+      0%, 100% { opacity: 1;}
+      50% { opacity: 0.65;}
+    }
+    .desc {
+      max-width: 520px;
+      font-size: 1.12em;
+      line-height: 1.7;
+      color: #e2ecf7;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .contact {
+      margin-bottom: 10px;
+      font-size: 1.08em;
+      text-align: center;
+      color: #7ff7e6;
+      letter-spacing: 0.04em;
+      font-weight: 500;
+    }
+    .contact a {
+      color: #01ffe6;
+      text-decoration: underline;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .contact a:hover {
+      color: #00a6fb;
+    }
+    .footer {
+      color: #668;
+      font-size: 1.03em;
+      letter-spacing: 0.04em;
+      margin-top: 65px;
+      margin-bottom: 18px;
+      opacity: 0.73;
+      text-align: center;
+      font-style: italic;
+    }
+    @media (max-width: 600px) {
+      .desc { font-size: 1em; }
+      .logo-svg { width: 62px; height: 62px; }
+      .logo-text { font-size: 1.15em; }
+      .coming-soon { font-size: 1.1em; }
+      .footer { font-size: 0.97em; margin-top: 38px;}
     }
   </style>
 </head>
 <body>
-  <h1>Robostrand</h1>
-  <p>Our website is under construction. Something exciting is coming soon.</p>
-  <p>Contact us: <a href="mailto:info@robostrand.com" style="color:#1e90ff;">info@robostrand.com</a></p>
+  <div class="container">
+    <div class="logo">
+      <!-- Super-simplified modern logo -->
+      <svg class="logo-svg" viewBox="0 0 100 100" fill="none">
+        <!-- Outer ring -->
+        <circle cx="50" cy="50" r="42" stroke="#01ffe6" stroke-width="3"/>
+        <!-- Central "eye"/hub -->
+        <circle cx="50" cy="50" r="13" fill="#01ffe6" stroke="#0b1018" stroke-width="2"/>
+        <!-- Multiply shape (fitted to outer circle) -->
+        <line x1="20" y1="20" x2="80" y2="80" stroke="#00a6fb" stroke-width="2.2" />
+        <line x1="80" y1="20" x2="20" y2="80" stroke="#00a6fb" stroke-width="2.2" />
+      </svg>
+      <div class="logo-text">Robostrand</div>
+    </div>
+    <div class="coming-soon">COMING SOON</div>
+    <div class="desc">
+      Engineering the next wave of robotic solutions using <b>precise, modular cable-driven mechanisms</b> for every industry.<br><br>
+      <b>Why cable-driven robots?</b> Unmatched workspace flexibility, force control precision, high speed, energy efficiency, and modularity—driving the future of automation.<br><br>
+      <em>From research to production, our systems will redefine what robots can achieve.</em>
+    </div>
+    <div class="contact">
+      Contact us: <a href="mailto:info@robostrand.com">info@robostrand.com</a>
+    </div>
+    <div class="footer">
+      &copy; 2025 Robostrand. <span style="opacity:0.6">Strand by strand, we build the future.</span>
+    </div>
+  </div>
 </body>
 </html>
