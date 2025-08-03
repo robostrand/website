@@ -1,224 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Robostrand — Coming Soon</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --brand-cyan: #01ffe6;
-      --brand-blue: #005cfb;
-      --brand-dark: #10141c;
-    }
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      font-family: 'Roboto', Arial, sans-serif;
-      background: radial-gradient(ellipse at center, #202832 65%, #0b1018 100%);
-      color: #fff;
-      overflow: hidden;
-    }
-    .container {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      width: 100vw;
-      text-align: center;
-      padding: 0 1rem;
-    }
-    canvas#robotCanvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-    .logo {
-      margin-bottom: 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      animation: float 3s ease-in-out infinite;
-    }
-    @keyframes float {
-      0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);}  
-    }
-    .logo-svg {
-      width:100px;
-      height:100px;
-      filter: drop-shadow(0 0 18px #01ffe650);
-    }
-    .logo-text {
-      font-family: 'Orbitron','Roboto',Arial,sans-serif;
-      font-size:2.05em;
-      font-weight:bold;
-      letter-spacing:0.09em;
-      background: linear-gradient(90deg, #01ffe6 30%, #00a6fb 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-top:13px;
-      text-shadow: 0 2px 18px #00a6fb33;
-    }
-    .coming-soon {
-      font-family:'Orbitron',Arial,sans-serif;
-      font-size:2em;
-      letter-spacing:0.13em;
-      color:#01ffe6;
-      text-shadow:0 0 16px #01ffe677,0 0 42px #00a6fb33;
-      margin:12px 0 20px;
-      font-weight:700;
-      animation:pulse 2.2s infinite;
-    }
-    @keyframes pulse {0%,100%{opacity:1;}50%{opacity:0.65;}}
-    .desc {
-      max-width:520px;
-      font-size:1.12em;
-      line-height:1.7;
-      color:#e2ecf7;
-      margin-bottom:32px;
-    }
-    .contact {
-      margin-bottom:10px;
-      font-size:1.08em;
-      color:#7ff7e6;
-      letter-spacing:0.04em;
-      font-weight:500;
-    }
-    .contact a {
-      color:#01ffe6;
-      text-decoration:underline;
-      font-weight:500;
-      transition:color 0.2s;
-    }
-    .contact a:hover {
-      color:#00a6fb;
-    }
-    .footer {
-      color:#668;
-      font-size:1.03em;
-      letter-spacing:0.04em;
-      margin:65px 0 18px;
-      opacity:0.73;
-      font-style:italic;
-    }
-    @media(max-width:600px){
-      .desc{font-size:1em;} .logo-svg{width:62px;height:62px;} 
-      .logo-text{font-size:1.15em;} .coming-soon{font-size:1.1em;} 
-      .footer{font-size:0.97em;margin:38px 0;}
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Robostrand — Coming Soon</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --brand-cyan:#01ffe6;
+    --brand-blue:#005cfb;
+    --brand-dark:#10141c;
+  }
+
+  /* GLOBAL RESET + no-select so dragging never highlights text            */
+  html,body,*{box-sizing:border-box;user-select:none;margin:0;padding:0;}
+
+  html,body{
+    height:100%;
+    font-family:'Roboto',Arial,sans-serif;
+    background:radial-gradient(ellipse at center,#202832 65%,#0b1018 100%);
+    color:#fff;overflow:hidden;
+  }
+
+  /* Canvas now SITS ON TOP so it always receives the pointer              */
+  canvas#robotCanvas{
+    position:fixed;top:0;left:0;
+    width:100%;height:100%;
+    z-index:2;
+    touch-action:none;        /* let us capture pan/drag */
+    pointer-events:auto;      /* explicit for clarity     */
+  }
+
+  /* UI lives underneath the canvas; we still SEE it because canvas is     */
+  /* transparent, but we disable its hit-testing so clicks pass through.   */
+  .container{
+    position:relative;z-index:1;
+    display:flex;flex-direction:column;
+    justify-content:center;align-items:center;
+    min-height:100vh;width:100vw;text-align:center;padding:0 1rem;
+    pointer-events:none;      /* clicks go to canvas                        */
+  }
+  /* re-enable links/buttons inside the container                          */
+  .container a,.container button{pointer-events:auto;}
+
+  .logo{margin-bottom:30px;display:flex;flex-direction:column;align-items:center;animation:float 3s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);} }
+  .logo-svg{width:100px;height:100px;filter:drop-shadow(0 0 18px #01ffe650);}
+  .logo-text{font-family:'Orbitron',Arial,sans-serif;font-size:2.05em;font-weight:bold;letter-spacing:.09em;
+    background:linear-gradient(90deg,var(--brand-cyan)30%,var(--brand-blue)100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent;
+    margin-top:13px;text-shadow:0 2px 18px rgba(0,92,251,.25);}
+  .coming-soon{font-family:'Orbitron',Arial,sans-serif;font-size:2em;letter-spacing:.13em;color:var(--brand-cyan);
+    text-shadow:0 0 16px rgba(1,255,230,.4),0 0 42px rgba(0,92,251,.2);margin:12px 0 20px;font-weight:700;animation:pulse 2.2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.65;}}
+  .desc{max-width:520px;width:90%;font-size:1.12em;line-height:1.6;color:#e2ecf7;margin-bottom:32px;word-break:break-word;}
+  .contact{margin-bottom:10px;font-size:1.08em;color:#7ff7e6;letter-spacing:.04em;font-weight:500;}
+  .contact a{color:var(--brand-cyan);text-decoration:underline;font-weight:500;transition:color .2s;}
+  .contact a:hover{color:var(--brand-blue);}
+  .footer{color:#668;font-size:1.03em;letter-spacing:.04em;margin:65px 0 18px;opacity:.73;font-style:italic;}
+
+  @media(max-width:600px){
+    .logo-svg{width:62px;height:62px;}
+    .logo-text{font-size:1.15em;}
+    .coming-soon{font-size:1.1em;}
+    .desc{font-size:1em;}
+    .footer{font-size:.97em;margin:38px 0;}
+  }
+</style>
 </head>
+
 <body>
   <canvas id="robotCanvas"></canvas>
+
+  <!--  marketing overlay  -->
   <div class="container">
     <div class="logo">
       <svg class="logo-svg" viewBox="0 0 100 100" fill="none">
-        <circle cx="50" cy="50" r="42" stroke="#01ffe6" stroke-width="3"/>
-        <circle cx="50" cy="50" r="13" fill="#01ffe6" stroke="#0b1018" stroke-width="2"/>
-        <line x1="20" y1="20" x2="80" y2="80" stroke="#00a6fb" stroke-width="2.2"/>
-        <line x1="80" y1="20" x2="20" y2="80" stroke="#00a6fb" stroke-width="2.2"/>
+        <circle cx="50" cy="50" r="42" stroke="var(--brand-cyan)" stroke-width="3"/>
+        <circle cx="50" cy="50" r="13" fill="var(--brand-cyan)" stroke="var(--brand-dark)" stroke-width="2"/>
+        <line x1="20" y1="20" x2="80" y2="80" stroke="var(--brand-blue)" stroke-width="2.2"/>
+        <line x1="80" y1="20" x2="20" y2="80" stroke="var(--brand-blue)" stroke-width="2.2"/>
       </svg>
       <div class="logo-text">Robostrand</div>
     </div>
-    <div class="coming-soon">COMING SOON</div>
+    <div class="coming-soon">COMING&nbsp;SOON</div>
     <div class="desc">
       Engineering the next wave of robotic solutions using <b>precise, modular cable-driven mechanisms</b> for every industry.<br><br>
-      <b>Why cable-driven robots?</b> Unmatched workspace flexibility, force control precision, high speed, energy efficiency, and modularity—driving the future of automation.<br><br>
+      <b>Why cable-driven robots?</b> Unmatched workspace flexibility, force-control precision, high speed, energy efficiency, and modularity—driving the future of automation.<br><br>
       <em>From research to production, our systems will redefine what robots can achieve.</em>
     </div>
-    <div class="contact">
-      Contact us: <a href="mailto:info@robostrand.com">info@robostrand.com</a>
-    </div>
-    <div class="footer">&copy; 2025 Robostrand. <span style="opacity:0.6">Strand by strand, we build the future.</span></div>
+    <div class="contact">Contact&nbsp;us:&nbsp;<a href="mailto:info@robostrand.com">info@robostrand.com</a></div>
+    <div class="footer">&copy; 2025 Robostrand.&nbsp;<span style="opacity:.6">Strand by strand, we build the future.</span></div>
   </div>
+
   <script>
-    (() => {
-      const canvas = document.getElementById('robotCanvas');
-      const ctx = canvas.getContext('2d');
-      const dpr = window.devicePixelRatio || 1;
-      let W, H;
-      
-      function resize() {
-        W = canvas.width = window.innerWidth * dpr;
-        H = canvas.height = window.innerHeight * dpr;
-        canvas.style.width = window.innerWidth + 'px';
-        canvas.style.height = window.innerHeight + 'px';
-      }
-      window.addEventListener('resize', resize);
-      resize();
-      
-      const anchors = [
-        [0, 0],
-        [() => W, 0],
-        [() => W, () => H],
-        [0, () => H]
-      ];
-      const trail = [];
-      const MAX_TRAIL = 500;
-      let t = 0;
-      
-      function draw() {
-        t += 0.008;
-        // circle orbit
-        const ang = t;
-        const cx = W / 2;
-        const cy = H / 2;
-        const r = Math.min(W, H) * 0.35;
-        const pos = { x: cx + Math.cos(ang) * r, y: cy + Math.sin(ang) * r };
+(() => {
+  /* ────────────  Canvas setup  ──────────── */
+  const canvas = document.getElementById('robotCanvas');
+  const ctx     = canvas.getContext('2d');
+  const dpr     = window.devicePixelRatio || 1;
 
-        // store trail
-        trail.push(pos);
-        if (trail.length > MAX_TRAIL) trail.shift();
+  let W, H;
+  const resize = () => {
+    W = canvas.width  = window.innerWidth  * dpr;
+    H = canvas.height = window.innerHeight * dpr;
+  };
+  window.addEventListener('resize', resize, { passive:true });
+  resize();
 
-        // clear
-        ctx.clearRect(0, 0, W, H);
+  /* ────────────  Interaction state  ──────────── */
+  let isDragging = false;
+  let last = {x:0, y:0};
+  let resumeAt = 0;              // when orbit resumes
+  const RESUME_DELAY = 3000;      // ms
 
-        // draw fading trail
-        for (let i = 0; i < trail.length - 1; i=i+1) {
-          const p0 = trail[i];
-          const p1 = trail[i + 1];
-          const alpha = i / trail.length;
-          ctx.beginPath();
-          ctx.moveTo(p0.x, p0.y);
-          ctx.lineTo(p1.x, p1.y);
-          ctx.lineWidth = 2 * dpr;
-          ctx.strokeStyle = `rgba(1,255,230,${alpha * 0.5})`;
-          ctx.stroke();
-        }
+  const toCanvas = (e) => {
+    const r = canvas.getBoundingClientRect();
+    return { x:(e.clientX-r.left)*dpr, y:(e.clientY-r.top)*dpr };
+  };
 
-        // draw cables
-        ctx.beginPath();
-        ctx.lineWidth = 1.5 * dpr;
-        ctx.strokeStyle = 'rgba(0,92,251,0.8)';
-        anchors.forEach(a => {
-          const ax = typeof a[0] === 'function' ? a[0]() : a[0];
-          const ay = typeof a[1] === 'function' ? a[1]() : a[1];
-          ctx.moveTo(ax, ay);
-          ctx.lineTo(pos.x, pos.y);
-        });
-        ctx.stroke();
+  const startDrag = (e) => {
+    e.preventDefault();
+    isDragging = true;
+    last = toCanvas(e);
+    canvas.setPointerCapture(e.pointerId); // keeps events even if pointer leaves canvas
+  };
 
-        // draw end-effector
-        ctx.beginPath();
-        ctx.arc(pos.x, pos.y, 6 * dpr, 0, Math.PI * 2);
-        ctx.fillStyle = '#01ffe6';
-        ctx.fill();
-        ctx.lineWidth = 2 * dpr;
-        ctx.strokeStyle = '#10141c';
-        ctx.stroke();
+  const moveDrag = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    last = toCanvas(e);
+  };
 
-        requestAnimationFrame(draw);
-      }
-      draw();
-    })();
+  const endDrag = () => {
+    if (!isDragging) return;
+    isDragging = false;
+    resumeAt = performance.now() + RESUME_DELAY;
+  };
+
+  canvas.addEventListener('pointerdown',   startDrag);
+  canvas.addEventListener('pointermove',   moveDrag);
+  canvas.addEventListener('pointerup',     endDrag);
+  canvas.addEventListener('pointercancel', endDrag);
+
+  /* ────────────  CDPR geometry  ──────────── */
+  const anchors = [
+    [0,           0],
+    [() => W,     0],
+    [() => W, () => H],
+    [0,        () => H]
+  ];
+
+  /* ────────────  Animation loop  ──────────── */
+  const trail = [];
+  const MAX_TRAIL = 500;
+  let t = 0;                     // orbit phase
+  const SPEED = 0.009;           // rad / frame
+
+  (function draw(){
+    const now = performance.now();
+    if (!isDragging && now >= resumeAt) t += SPEED;
+
+    // circular reference orbit
+    const cx=W/2, cy=H/2, r=Math.min(W,H)*0.35;
+    const orbitPos = { x:cx + Math.cos(t)*r, y:cy + Math.sin(t)*r };
+
+    const pos = (isDragging || now < resumeAt) ? last : orbitPos;
+
+    // trail
+    trail.push({...pos});
+    if (trail.length > MAX_TRAIL) trail.shift();
+
+    /* ── render ── */
+    ctx.clearRect(0,0,W,H);
+
+    // fading trail
+    for (let i=0;i<trail.length-1;i++){
+      const a  = i / trail.length;
+      const p0 = trail[i], p1 = trail[i+1];
+      ctx.beginPath();
+      ctx.moveTo(p0.x,p0.y);
+      ctx.lineTo(p1.x,p1.y);
+      ctx.lineWidth = 2*dpr;
+      ctx.strokeStyle = `rgba(1,255,230,${a*0.65})`;
+      ctx.stroke();
+    }
+
+    // cables
+    ctx.beginPath();
+    ctx.lineWidth = 1.5*dpr;
+    ctx.strokeStyle = 'rgba(0,92,251,0.8)';
+    anchors.forEach(a=>{
+      const ax = typeof a[0]==='function'?a[0]():a[0];
+      const ay = typeof a[1]==='function'?a[1]():a[1];
+      ctx.moveTo(ax,ay);
+      ctx.lineTo(pos.x,pos.y);
+    });
+    ctx.stroke();
+
+    // end-effector
+    ctx.beginPath();
+    ctx.arc(pos.x,pos.y,6*dpr,0,Math.PI*2);
+    ctx.fillStyle='var(--brand-cyan)';
+    ctx.fill();
+    ctx.lineWidth=2*dpr;
+    ctx.strokeStyle='var(--brand-dark)';
+    ctx.stroke();
+
+    requestAnimationFrame(draw);
+  })();
+})();
   </script>
 </body>
 </html>
